@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>عرض الفيديو</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="website icon" type="png" href="XNXX.jpg">
+</head>
+<body>
+  <header class="site-header">
+    <h1 id="video-title">تشغيل الفيديو</h1>
+  </header>
+
+  <main class="video-page">
+    <video id="player" controls playsinline controlsList="nodownload">
+      المتصفح لا يدعم عنصر الفيديو.
+    </video>
+    <div id="back-link"><a href="index.html">◀ العودة إلى القائمة</a></div>
+  </main>
+
+  <script type="module">
+    // حماية بسيطة: منع الوصول المباشر إذا لم يتم فتح القفل أولاً
+    const unlocked = localStorage.getItem('unlocked_v1');
+    if (unlocked !== '1') {
+      // redirect back to index
+      location.href = 'index.html';
+    } else {
+      const params = new URLSearchParams(location.search);
+      const file = params.get('file');
+      if (!file) {
+        document.getElementById('video-title').textContent = 'لم يتم العثور على فيديو';
+      } else {
+        document.getElementById('video-title').textContent = decodeURIComponent(file);
+        const player = document.getElementById('player');
+        // Use relative path without double-encoding in case names are already safe
+        player.src = 'video/' + decodeURIComponent(file);
+      }
+    }
+  </script>
+</body>
+</html>
